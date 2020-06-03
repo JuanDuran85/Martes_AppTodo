@@ -11,7 +11,7 @@ export default {
   name: 'TodoAdd',
   data() {
     return {
-      titulo: 'Lista de Cursos',
+      titulo: 'Agregar Cursos',
       agregar: '',
     }
   },
@@ -20,6 +20,7 @@ export default {
       if (this.agregar){
         this.$store.dispatch('agregarCursoVuex',this.agregar);
         this.agregar = '';
+        alert('Curso agregado a la lista');
       }else {
         alert('Ingrese un curso');
       }

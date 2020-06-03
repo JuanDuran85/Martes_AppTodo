@@ -1,17 +1,13 @@
 <template>
   <div>
-   
-    <TodoLista/>
+    <h1>Inicio</h1>
   </div>
 </template>
 
 <script>
-import TodoLista from '@/components/TodoLista.vue';
+
 
 export default {
   name: 'Home',
-  components: {
-    TodoLista
-  }
 }
 </script>
