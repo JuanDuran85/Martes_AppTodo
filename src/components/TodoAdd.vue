@@ -19,6 +19,7 @@ export default {
     agregarCurso(){
       if (this.agregar){
         this.$store.dispatch('agregarCursoVuex',this.agregar);
+        this.agregar = '';
       }else {
         alert('Ingrese un curso');
       }
