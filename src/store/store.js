@@ -52,6 +52,10 @@ export default new Vuex.Store({
       setTimeout(()=>{
         alert('Borrado con éxito')
       },500);
+    },
+    updateCurso(state,id){
+      let actualizado = state.cursosLista.find(result => result.id == id);
+      actualizado.completed = !actualizado.completed;
     }
   },
   actions: {
@@ -60,6 +64,9 @@ export default new Vuex.Store({
     },
     eliminarCurso(context, id){
       context.commit('deleteCurso',id)
+    },
+    actualizar(context,id){
+      context.commit('updateCurso',id);
     }
   },
 })
