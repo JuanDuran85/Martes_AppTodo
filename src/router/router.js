@@ -14,6 +14,16 @@ Vue.use(VueRouter)
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/agregar',
+    name: 'Agregar',
+    component: () => import('../views/Agregar.vue')
+  },
+  {
+    path: '/ver',
+    name: 'Ver',
+    component: () => import('../views/Ver.vue')
   }
 ]
 

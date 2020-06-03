@@ -11,10 +11,10 @@
                     <router-link class="nav-link" to="/login">Login</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/login">Agregar Cursos</router-link>
+                    <router-link class="nav-link" to="/agregar">Agregar Cursos</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/login">Ver Cursos</router-link>
+                    <router-link class="nav-link" to="/ver">Ver Cursos</router-link>
                 </li>
             </ul>
         </div>
