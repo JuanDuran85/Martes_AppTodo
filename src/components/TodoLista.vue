@@ -1,5 +1,11 @@
 <template>
   <div class="container">
+      <h4>Buscar</h4>
+      <div class="ml-auto">
+        <input type="text" v-model="busqueda" placeholder="Ingresa un dato para la busqueda">
+        <input type="checkbox" class="form-check-input ml-4" v-model="completo">
+        <label class="ml-5 form-check-label" for="exampleCheck1">Completo</label>
+      </div>
       <h1>Lista de cursos</h1>
       <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 my-3" v-for="(curso,index) in traerCursos" :key="index">
@@ -66,13 +72,17 @@ export default {
         return {
             nuevaDescripcion: '',
             nuevoNombre: '',
-            nuevaImagen: ''
+            nuevaImagen: '',
+            busqueda: '',
+            completo: false
         }
     },
     computed: { 
         traerCursos(){
-            return this.$store.getters.enviadoCursos;
-        } 
+            return this.$store.getters.enviadoCursos.filter(datos =>{
+                return datos.name.toLowerCase().includes(this.busqueda.toLowerCase())
+            })
+        }
     },
     methods: { 
         eliminarCurso(id){
