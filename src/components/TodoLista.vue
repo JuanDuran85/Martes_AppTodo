@@ -18,7 +18,41 @@
                 <div class="card-body">
                     <button type="button" class="btn btn-success mx-2" @click="completado(curso.id)">{{curso.completed ? 'Acualizado' : 'Actualizar'}}</button>
                     <button @click="eliminarCurso(curso.id)" type="button" class="btn btn-danger mx-2">Eliminar</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#ID'+curso.id">Editar</button>
                 </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" :id="'ID'+curso.id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editando Curso {{curso.name}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="nombrecurso">Editar Nombre del Curso</label>
+                            <input type="text" class="form-control" :placeholder="curso.name" v-model="nuevoNombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Editar Descripción del Curso</label>
+                            <textarea class="form-control" rows="3" :placeholder="curso.description" v-model="nuevaDescripcion"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombrecurso">Editar Enlace de Imagen del Curso</label>
+                            <input type="text" class="form-control" :placeholder="curso.image" v-model="nuevaImagen">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" @click.prevent="nuevoDatosCurso(curso.id)">Guardar</button>
+                </div>
+                </div>
+            </div>
             </div>
         </div>
       </div>
@@ -28,6 +62,13 @@
 <script>
 export default {
     name: 'TodoLista',
+    data() {
+        return {
+            nuevaDescripcion: '',
+            nuevoNombre: '',
+            nuevaImagen: ''
+        }
+    },
     computed: { 
         traerCursos(){
             return this.$store.getters.enviadoCursos;
@@ -41,6 +82,26 @@ export default {
         },
         completado(id){
             this.$store.dispatch('actualizar',id)
+        },
+        nuevoDatosCurso(id){
+            let datosNuevosCurso = {
+                name: this.nuevoNombre,
+                description: this.nuevaDescripcion,
+                image: this.nuevaImagen,
+                id: id
+            };
+            console.log(datosNuevosCurso)
+            if (this.nuevoNombre && this.nuevaImagen && this.nuevaDescripcion){
+                this.$store.dispatch('CursoDatosNuevos',datosNuevosCurso)
+                this.nuevoNombre = "";
+                this.nuevaImagen = ""; 
+                this.nuevaDescripcion = "";
+            }else{
+                console.log("Ingrese datos para modificar");
+                this.nuevoNombre = "";
+                this.nuevaImagen = ""; 
+                this.nuevaDescripcion = "";
+            }
         }
     }
 }

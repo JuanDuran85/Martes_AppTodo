@@ -60,6 +60,12 @@ export default new Vuex.Store({
     updateCurso(state,id){
       let actualizado = state.cursosLista.find(result => result.id == id);
       actualizado.completed = !actualizado.completed;
+    },
+    mutandoDatosNuevos(state, recibidoDatosNuevos){
+      let filtroID = state.cursosLista.find(result => result.id == recibidoDatosNuevos.id);
+      filtroID.name = recibidoDatosNuevos.name;
+      filtroID.description = recibidoDatosNuevos.description;
+      filtroID.image = recibidoDatosNuevos.image;
     }
   },
   actions: {
@@ -71,6 +77,9 @@ export default new Vuex.Store({
     },
     actualizar(context,id){
       context.commit('updateCurso',id);
+    },
+    CursoDatosNuevos(context, recibidoDatosNuevos){
+      context.commit('mutandoDatosNuevos',recibidoDatosNuevos);
     }
   },
 })
