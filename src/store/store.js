@@ -9,11 +9,15 @@ export default new Vuex.Store({
       {
         id: 0,
         name: 'VueJS',
+        description: 'The Progressive JavaScript Framework',
+        image: 'https://vuejs.org/images/logo.png?_sw-precache=cf23526f451784ff137f161b8fe18d5a',
         completed: false
       },
       {
         id: 1,
         name: 'ReactJS',
+        description: 'Una biblioteca de JavaScript para construir interfaces de usuario',
+        image: 'https://miro.medium.com/max/700/1*dLaDL-lSN0iprzmOpmM7zQ.png',
         completed: false
       }
     ]
@@ -26,11 +30,9 @@ export default new Vuex.Store({
   mutations: {
     almacenandoCurso(state, recibidoCursoActions){
       let idNuevo = Math.floor(Math.random()*10);
-      console.log(idNuevo)
 
       while (idNuevo > -1){
         let busqueda = state.cursosLista.find(result => result.id == idNuevo);
-        console.log(busqueda)
         if (busqueda == undefined){
           break;
         } else if (busqueda.id == idNuevo){
@@ -40,8 +42,10 @@ export default new Vuex.Store({
 
       let curso_temporal = {
         id: idNuevo,
-        name: recibidoCursoActions,
-        completed: false
+        name: recibidoCursoActions.name,
+        image: recibidoCursoActions.image,
+        description: recibidoCursoActions.description,
+        completed: recibidoCursoActions.completed
       }
       state.cursosLista.unshift(curso_temporal);
     },
