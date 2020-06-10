@@ -1,20 +1,23 @@
 <template>
   <div class="mt-5">
-    <form class="mt-4">
+    <h1 class="text-center my-5">Login de Usuario</h1>
+
+    <b-form @submit.prevent="login" @reset="onReset">
       <div class="alert alert-danger" role="alert" v-show="error">
         {{error}}
       </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">Ingrese el Corro Electrónico</label>
-        <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Ingresa tu correo electrónico" v-model="correo">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">Ingrese la Contraseña</label>
-        <input type="password" class="form-control" placeholder="**********" v-model="clave">
-      </div>
-      <button type="submit" class="btn btn-primary">Enviar</button>
-    </form>
+    <!-- correo -->
+      <b-form-group id="input-group-1" label="Correo Electrónico:" label-for="input-2">
+        <b-form-input id="input-2" v-model="email" type="email" required placeholder="Ingrese el correo electrónico"></b-form-input>
+      </b-form-group>
+    <!-- claves --> 
+      <b-form-group id="input-group-2" label="Ingresa una Contraseña:" label-for="input-3">
+        <b-form-input id="input-3" v-model="clave" type="password" required placeholder="Ingresa Contraseña"></b-form-input>
+      </b-form-group>
+    <!-- botones -->
+      <b-button type="submit" variant="primary" class="mx-2">Entrar</b-button>
+      <b-button type="reset" variant="danger" class="mx-2">Borrar</b-button>
+    </b-form>
   </div>
 </template>
 
@@ -23,9 +26,17 @@ export default {
   name: 'Login',
   data() {
     return {
-      correo: '',
+      email: '',
       clave: '',
       error: ''
+    }
+  },
+  methods: {
+    login() {
+      console.log("login")
+    },
+    onReset(){
+      console.log("reset")
     }
   },
 }
