@@ -22,6 +22,9 @@
 </template>
 
 <script>
+import firebase from 'firebase';
+import Swal from 'sweetalert2';
+
 export default {
   name: 'Login',
   data() {
@@ -33,10 +36,51 @@ export default {
   },
   methods: {
     login() {
-      console.log("login")
+      this.error = '';
+      const expresionCorreo = /\w+@\w+\.+[a-z]/;
+
+      if (!expresionCorreo.test(this.email)){
+          this.error = "Correo Electrónico no es valido";
+      }else if(!this.clave || this.clave.length < 6){
+          this.error = 'Error en las contraseñas';
+      }else{
+        firebase.auth().signInWithEmailAndPassword(this.email,this.clave)
+        .then(respuesta=>{
+          let datosUser = {
+            displayName: respuesta.user.displayName,
+            email: respuesta.user.email,
+            emailVerified: respuesta.user.emailVerified,
+            uid: respuesta.user.uid
+          };
+          this.error = '';
+          this.email = '';
+          this.clave = '';
+          this.$store.dispatch('usurioRegistro',datosUser);
+          this.$router.push('/');
+        })
+        .catch(error=>{
+          console.log(error);
+          if (error.code == 'auth/user-not-found'){
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'El usuario no existe en nuestra base de datos',
+              footer: '<b>AppToDo</b>'
+            });
+          }else if(error.code == 'auth/wrong-password'){
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'El Correo y/o Contraseña no son validos',
+              footer: '<b>AppToDo</b>'
+            });
+          }
+        })
+      }
     },
     onReset(){
       console.log("reset")
+      this.error = '';
     }
   },
 }

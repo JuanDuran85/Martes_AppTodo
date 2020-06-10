@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    usuario: JSON.parse(localStorage.getItem("usuario")) || {},
     cursosLista: [
       {
         id: 0,
@@ -25,6 +26,9 @@ export default new Vuex.Store({
   getters: {
     enviadoCursos(state){
       return state.cursosLista;
+    },
+    enviandoUsuario(state){
+      return state.usuario;
     }
   },
   mutations: {
@@ -66,6 +70,10 @@ export default new Vuex.Store({
       filtroID.name = recibidoDatosNuevos.name;
       filtroID.description = recibidoDatosNuevos.description;
       filtroID.image = recibidoDatosNuevos.image;
+    },
+    updateUsuario(state,datosUsuarioRecibido){
+      localStorage.setItem("usuario", JSON.stringify(datosUsuarioRecibido));
+      state.usuario = datosUsuarioRecibido;
     }
   },
   actions: {
@@ -80,6 +88,9 @@ export default new Vuex.Store({
     },
     CursoDatosNuevos(context, recibidoDatosNuevos){
       context.commit('mutandoDatosNuevos',recibidoDatosNuevos);
+    },
+    usurioRegistro(context, datosRecibidos){
+      context.commit('updateUsuario',datosRecibidos);
     }
   },
 })

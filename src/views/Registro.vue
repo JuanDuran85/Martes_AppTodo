@@ -33,6 +33,7 @@
 
 <script>
 import firebase from 'firebase';
+import Swal from 'sweetalert2';
 
 export default {
     name: 'Registro',
@@ -66,13 +67,12 @@ export default {
             }else if(!expresionNombre.test(this.name) || !this.name.length > 2){
                 this.error.push('El Nombre no es permitido')
             }else if(!this.passA || !this.passB || this.passA != this.passB || this.passA.length < 6){
-                this.error.push('Error en las contraseñas')
+                this.error.push('Error en las contraseñas / Debe ser mayor a 6 digitos')
             }else{
                 firebase.auth().createUserWithEmailAndPassword(this.email,this.passB).then(respuesta => {
                     return respuesta.user.updateProfile({
                         displayName: this.name
                     }).then(()=>{
-                        console.log(respuesta);
                         this.error = [];
                         this.name = "";
                         this.email = "";
@@ -84,15 +84,26 @@ export default {
                             emailVerified: respuesta.user.emailVerified,
                             uid: respuesta.user.uid
                         };
-                        this.$store.dispatch('usurioRegistro',datosUser)
+                        this.$store.dispatch('usurioRegistro',datosUser);
+                        this.$router.push('/');
                     })
                 }).catch(error => {
-                    console.error(error);   
+                    console.error(error);
+                    if (error.code == 'auth/email-already-in-use'){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'El usuario ya existe',
+                            footer: '<b>AppToDo</b>'
+                        });  
+                    }
+ 
                 })
             }
         },
         onReset(){
-            console.log("reset")
+            console.log("reset");
+            this.error = [];
         }
   },
 }
