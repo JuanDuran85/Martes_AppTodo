@@ -8,7 +8,8 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    alias:['/Inicio','/inicio']
   },
   {
     path: '/login',
@@ -24,6 +25,16 @@ Vue.use(VueRouter)
     path: '/ver',
     name: 'Ver',
     component: () => import('../views/Ver.vue')
+  },
+  {
+    path: '/registrar',
+    name: 'Registrar',
+    component: () => import('../views/Registro.vue'),
+    alias: ['/registro','/crearcuenta','/cuenta','/crear']
+  },
+  {
+    path: '*',
+    redirect: '/login'
   }
 ]
 
