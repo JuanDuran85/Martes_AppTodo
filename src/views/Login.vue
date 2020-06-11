@@ -60,6 +60,7 @@ export default {
         })
         .catch(error=>{
           console.log(error);
+          console.log(error.message);
           if (error.code == 'auth/user-not-found'){
             Swal.fire({
               icon: 'error',

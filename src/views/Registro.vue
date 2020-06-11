@@ -3,7 +3,7 @@
     <h1 class="text-center my-5">Registro de Usuario</h1>
 
     <b-form @submit.prevent="registro" @reset="onReset">
-    <div class="alert alert-danger" role="alert" v-show="error[0]" v-for="(item, index) in error" :key="index">
+      <div class="alert alert-danger" role="alert" v-show="error[0]" v-for="(item, index) in error" :key="index">
         {{item}}
       </div>
     <!-- correo -->
@@ -53,7 +53,7 @@ export default {
           }else if(this.error.length == 0) {
               this.error.push('Las contraseñas no son iguales');
           }
-      }  
+      }
     },
     methods: {
         registro() {
@@ -69,7 +69,8 @@ export default {
             }else if(!this.passA || !this.passB || this.passA != this.passB || this.passA.length < 6){
                 this.error.push('Error en las contraseñas / Debe ser mayor a 6 digitos')
             }else{
-                firebase.auth().createUserWithEmailAndPassword(this.email,this.passB).then(respuesta => {
+                firebase.auth().createUserWithEmailAndPassword(this.email,this.passB)
+                .then(respuesta => {
                     return respuesta.user.updateProfile({
                         displayName: this.name
                     }).then(()=>{

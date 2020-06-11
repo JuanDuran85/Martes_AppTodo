@@ -31,6 +31,12 @@ export default {
         }
       } else {
         console.log("No hay usuario");
+          this.usuarioInfo = {
+            displayName: '',
+            email: '',
+            emailVerified: '',
+            uid: ''
+          }
       }
     })
   },
