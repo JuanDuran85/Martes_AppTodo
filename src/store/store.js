@@ -1,27 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { db } from "../main";
+import Swal from 'sweetalert2';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     usuario: JSON.parse(localStorage.getItem("usuario")) || {},
-    cursosLista: [
-      {
-        id: 0,
-        name: 'VueJS',
-        description: 'The Progressive JavaScript Framework',
-        image: 'https://vuejs.org/images/logo.png?_sw-precache=cf23526f451784ff137f161b8fe18d5a',
-        completed: false
-      },
-      {
-        id: 1,
-        name: 'ReactJS',
-        description: 'Una biblioteca de JavaScript para construir interfaces de usuario',
-        image: 'https://miro.medium.com/max/700/1*dLaDL-lSN0iprzmOpmM7zQ.png',
-        completed: false
-      }
-    ]
+    cursosLista: []
   },
   getters: {
     enviadoCursos(state){
@@ -32,26 +19,21 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    almacenandoCurso(state, recibidoCursoActions){
-      let idNuevo = Math.floor(Math.random()*10);
-
-      while (idNuevo > -1){
-        let busqueda = state.cursosLista.find(result => result.id == idNuevo);
-        if (busqueda == undefined){
-          break;
-        } else if (busqueda.id == idNuevo){
-          idNuevo++;
-        }
-      }
-
-      let curso_temporal = {
-        id: idNuevo,
-        name: recibidoCursoActions.name,
-        image: recibidoCursoActions.image,
-        description: recibidoCursoActions.description,
-        completed: recibidoCursoActions.completed
-      }
-      state.cursosLista.unshift(curso_temporal);
+    traerCursoDB(state){
+      db.collection("cursos_prueba").doc("usuario").collection("agregados").onSnapshot(datos => {
+        let auxiliar = [];
+        datos.forEach(elementos=>{
+          auxiliar.push({
+            idDoc: elementos.id,
+            id: elementos.data().id,
+            name: elementos.data().name,
+            image: elementos.data().image,
+            description: elementos.data().description,
+            completed: elementos.data().completed       
+          })
+        })
+        state.cursosLista = auxiliar;
+      })
     },
     deleteCurso(state, id){
       let cursoPorBorrar = state.cursosLista.findIndex(valor => valor.id === id);
@@ -78,7 +60,32 @@ export default new Vuex.Store({
   },
   actions: {
     agregarCursoVuex(context,recibidoCurso){
-      context.commit('almacenandoCurso',recibidoCurso);
+      let idNuevo = Math.floor(Math.random()*10);
+
+      while (idNuevo > -1){
+        let busqueda = context.state.cursosLista.find(result => result.id == idNuevo);
+        if (busqueda == undefined){
+          break;
+        } else if (busqueda.id == idNuevo){
+          idNuevo++;
+        }
+      }
+  
+      db.collection("cursos_prueba").doc("usuario").collection("agregados").add({
+        id: idNuevo,
+        name: recibidoCurso.name,
+        image: recibidoCurso.image,
+        description: recibidoCurso.description,
+        completed: recibidoCurso.completed
+      }).then(()=>{
+        Swal.fire(
+          'Muy bien!',
+          'Curso Agregado!',
+          'success'
+        )
+      }).catch((error)=>{
+        console.log(error);
+      })
     },
     eliminarCurso(context, id){
       context.commit('deleteCurso',id)
@@ -91,6 +98,9 @@ export default new Vuex.Store({
     },
     usurioRegistro(context, datosRecibidos){
       context.commit('updateUsuario',datosRecibidos);
+    },
+    acionTraerCursoDB(context){
+      context.commit('traerCursoDB')
     }
   },
 })

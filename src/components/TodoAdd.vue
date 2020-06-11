@@ -1,29 +1,39 @@
 <template>
   <div>
     <h1>{{ titulo }}</h1>
-    <form>
-      <div class="form-group">
-        <label for="nombrecurso">Nombre del Curso</label>
-        <input type="text" class="form-control" v-model="agregar" placeholder="Agregar un curso">
-      </div>
-      <div class="form-group">
-        <label for="exampleFormControlTextarea1">Descripción del Curso</label>
-        <textarea class="form-control" rows="3" v-model="descripcion"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="nombrecurso">Enlace de Imagen del Curso</label>
-        <input type="text" class="form-control" v-model="imagen" placeholder="https://www.dominio.com/imagen.png">
-      </div>
-      <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" v-model="completo">
-        <label class="form-check-label" for="exampleCheck1">Completo</label>
-      </div>
-      <button type="submit" class="btn btn-primary" @click.prevent="agregarCurso">Agregar</button>
-    </form>
+
+    <b-form @submit.prevent="agregarCurso" @reset="onReset">
+    <!-- nombre del curso -->
+      <b-form-group id="input-group-1" label="Nombre del Curso:" label-for="input-1" description="Ingresa el nombre del curso que quieres guardar">
+        <b-form-input id="input-1" v-model="agregar" type="text" placeholder="Ingrese el nombre del curso"></b-form-input>
+      </b-form-group>
+    
+    <!-- descripcion -->    
+      <b-form-group id="input-group-2" label="Descripción del Curso:" label-for="input-2">
+        <b-form-textarea id="textarea" v-model="descripcion" placeholder="Copia una descripción del curso..." rows="3" max-rows="6"></b-form-textarea>
+      </b-form-group>
+
+      <!-- imagen del curso --> 
+      <b-form-group id="input-group-1" label="Enlace de Imagen del Curso:" label-for="input-1" description="Ingresa una URL de la imagen del curso">
+        <b-form-input id="input-1" v-model="imagen" type="text" placeholder="https://www.dominio.com/imagen.png"></b-form-input>
+      </b-form-group>
+
+    <!-- completo --> 
+      <b-form-checkbox id="checkbox-1" v-model="completo" value="true" unchecked-value="false">Completo</b-form-checkbox>
+      <div>Completo: <strong>{{ completo }}</strong></div>
+
+    <!-- botones -->
+    <div class="mt-3">
+      <b-button type="submit" variant="primary" class="mx-2">Agregar</b-button>
+      <b-button type="reset" variant="danger" class="mx-2">Borrar</b-button>
+    </div>
+    </b-form>
   </div>
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 export default {
   name: "TodoAdd",
   data() {
@@ -49,11 +59,18 @@ export default {
         this.imagen = "";
         this.completo = false;
         this.descripcion = "";
-        console.log("Curso agregado a la lista");
       } else {
-        console.log("Ingrese un curso");
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Debe ingresar los datos solicitados',
+            footer: '<b>AppToDo</b>'
+          }); 
       }
     },
+    onReset(){
+      console.log("reset");
+    }
   },
 };
 </script>

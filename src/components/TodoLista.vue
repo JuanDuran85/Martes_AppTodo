@@ -113,7 +113,10 @@ export default {
                 this.nuevaDescripcion = "";
             }
         }
-    }
+    },
+    mounted() {
+        this.$store.dispatch('acionTraerCursoDB');
+    },
 }
 </script>
 
